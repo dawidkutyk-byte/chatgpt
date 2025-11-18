@@ -1,0 +1,76 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.ConnectionClosedException
+ *  org.apache.http.HttpException
+ *  org.apache.http.HttpRequest
+ *  org.apache.http.HttpRequestFactory
+ *  org.apache.http.ParseException
+ *  org.apache.http.RequestLine
+ *  org.apache.http.config.MessageConstraints
+ *  org.apache.http.impl.DefaultHttpRequestFactory
+ *  org.apache.http.impl.io.AbstractMessageParser
+ *  org.apache.http.io.SessionInputBuffer
+ *  org.apache.http.message.LineParser
+ *  org.apache.http.message.ParserCursor
+ *  org.apache.http.params.HttpParams
+ *  org.apache.http.util.Args
+ *  org.apache.http.util.CharArrayBuffer
+ */
+package org.apache.http.impl.io;
+
+import java.io.IOException;
+import org.apache.http.ConnectionClosedException;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestFactory;
+import org.apache.http.ParseException;
+import org.apache.http.RequestLine;
+import org.apache.http.config.MessageConstraints;
+import org.apache.http.impl.DefaultHttpRequestFactory;
+import org.apache.http.impl.io.AbstractMessageParser;
+import org.apache.http.io.SessionInputBuffer;
+import org.apache.http.message.LineParser;
+import org.apache.http.message.ParserCursor;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.Args;
+import org.apache.http.util.CharArrayBuffer;
+
+public class DefaultHttpRequestParser
+extends AbstractMessageParser<HttpRequest> {
+    private final HttpRequestFactory requestFactory;
+    private final CharArrayBuffer lineBuf;
+
+    protected HttpRequest parseHead(SessionInputBuffer sessionBuffer) throws IOException, HttpException, ParseException {
+        this.lineBuf.clear();
+        int readLen = sessionBuffer.readLine(this.lineBuf);
+        if (readLen == -1) {
+            throw new ConnectionClosedException("Client closed connection");
+        }
+        ParserCursor cursor = new ParserCursor(0, this.lineBuf.length());
+        RequestLine requestline = this.lineParser.parseRequestLine(this.lineBuf, cursor);
+        return this.requestFactory.newHttpRequest(requestline);
+    }
+
+    public DefaultHttpRequestParser(SessionInputBuffer buffer, MessageConstraints constraints) {
+        this(buffer, null, null, constraints);
+    }
+
+    @Deprecated
+    public DefaultHttpRequestParser(SessionInputBuffer buffer, LineParser lineParser, HttpRequestFactory requestFactory, HttpParams params) {
+        super(buffer, lineParser, params);
+        this.requestFactory = (HttpRequestFactory)Args.notNull((Object)requestFactory, (String)"Request factory");
+        this.lineBuf = new CharArrayBuffer(128);
+    }
+
+    public DefaultHttpRequestParser(SessionInputBuffer buffer) {
+        this(buffer, null, null, MessageConstraints.DEFAULT);
+    }
+
+    public DefaultHttpRequestParser(SessionInputBuffer buffer, LineParser lineParser, HttpRequestFactory requestFactory, MessageConstraints constraints) {
+        super(buffer, lineParser, constraints);
+        this.requestFactory = requestFactory != null ? requestFactory : DefaultHttpRequestFactory.INSTANCE;
+        this.lineBuf = new CharArrayBuffer(128);
+    }
+}

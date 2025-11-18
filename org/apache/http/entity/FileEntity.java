@@ -1,0 +1,79 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.entity.AbstractHttpEntity
+ *  org.apache.http.entity.ContentType
+ *  org.apache.http.util.Args
+ */
+package org.apache.http.entity;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import org.apache.http.entity.AbstractHttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.util.Args;
+
+public class FileEntity
+extends AbstractHttpEntity
+implements Cloneable {
+    protected final File file;
+
+    public FileEntity(File file) {
+        this.file = (File)Args.notNull((Object)file, (String)"File");
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public FileEntity(File file, ContentType contentType) {
+        this.file = (File)Args.notNull((Object)file, (String)"File");
+        if (contentType == null) return;
+        this.setContentType(contentType.toString());
+    }
+
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public void writeTo(OutputStream outStream) throws IOException {
+        Args.notNull((Object)outStream, (String)"Output stream");
+        FileInputStream inStream = new FileInputStream(this.file);
+        try {
+            int l;
+            byte[] tmp = new byte[4096];
+            while ((l = ((InputStream)inStream).read(tmp)) != -1) {
+                outStream.write(tmp, 0, l);
+            }
+            outStream.flush();
+        }
+        finally {
+            ((InputStream)inStream).close();
+        }
+    }
+
+    public boolean isStreaming() {
+        return false;
+    }
+
+    @Deprecated
+    public FileEntity(File file, String contentType) {
+        this.file = (File)Args.notNull((Object)file, (String)"File");
+        this.setContentType(contentType);
+    }
+
+    public InputStream getContent() throws IOException {
+        return new FileInputStream(this.file);
+    }
+
+    public long getContentLength() {
+        return this.file.length();
+    }
+
+    public boolean isRepeatable() {
+        return true;
+    }
+}

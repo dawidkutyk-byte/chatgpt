@@ -1,0 +1,15 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.conn.routing.HttpRoute
+ */
+package org.apache.http.client;
+
+import org.apache.http.conn.routing.HttpRoute;
+
+public interface BackoffManager {
+    public void backOff(HttpRoute var1);
+
+    public void probe(HttpRoute var1);
+}

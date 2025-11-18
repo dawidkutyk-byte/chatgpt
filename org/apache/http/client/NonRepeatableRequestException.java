@@ -1,0 +1,25 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.ProtocolException
+ */
+package org.apache.http.client;
+
+import org.apache.http.ProtocolException;
+
+public class NonRepeatableRequestException
+extends ProtocolException {
+    private static final long serialVersionUID = 82685265288806048L;
+
+    public NonRepeatableRequestException(String message) {
+        super(message);
+    }
+
+    public NonRepeatableRequestException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public NonRepeatableRequestException() {
+    }
+}

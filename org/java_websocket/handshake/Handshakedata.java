@@ -1,0 +1,16 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package org.java_websocket.handshake;
+
+import java.util.Iterator;
+
+public interface Handshakedata {
+    public byte[] getContent();
+
+    public Iterator<String> iterateHttpFields();
+
+    public String getFieldValue(String var1);
+
+    public boolean hasFieldValue(String var1);
+}

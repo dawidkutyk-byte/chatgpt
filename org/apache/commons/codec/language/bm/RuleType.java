@@ -1,0 +1,20 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package org.apache.commons.codec.language.bm;
+
+public enum RuleType {
+    APPROX("approx"),
+    EXACT("exact"),
+    RULES("rules");
+
+    private final String name;
+
+    public String getName() {
+        return this.name;
+    }
+
+    private RuleType(String name) {
+        this.name = name;
+    }
+}

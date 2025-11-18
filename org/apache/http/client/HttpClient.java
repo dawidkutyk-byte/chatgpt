@@ -1,0 +1,50 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.HttpHost
+ *  org.apache.http.HttpRequest
+ *  org.apache.http.HttpResponse
+ *  org.apache.http.client.ClientProtocolException
+ *  org.apache.http.client.ResponseHandler
+ *  org.apache.http.client.methods.HttpUriRequest
+ *  org.apache.http.conn.ClientConnectionManager
+ *  org.apache.http.params.HttpParams
+ *  org.apache.http.protocol.HttpContext
+ */
+package org.apache.http.client;
+
+import java.io.IOException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
+
+public interface HttpClient {
+    public HttpResponse execute(HttpUriRequest var1) throws IOException, ClientProtocolException;
+
+    public <T> T execute(HttpHost var1, HttpRequest var2, ResponseHandler<? extends T> var3) throws ClientProtocolException, IOException;
+
+    @Deprecated
+    public HttpParams getParams();
+
+    public <T> T execute(HttpUriRequest var1, ResponseHandler<? extends T> var2) throws ClientProtocolException, IOException;
+
+    public HttpResponse execute(HttpUriRequest var1, HttpContext var2) throws IOException, ClientProtocolException;
+
+    public <T> T execute(HttpUriRequest var1, ResponseHandler<? extends T> var2, HttpContext var3) throws ClientProtocolException, IOException;
+
+    public <T> T execute(HttpHost var1, HttpRequest var2, ResponseHandler<? extends T> var3, HttpContext var4) throws ClientProtocolException, IOException;
+
+    @Deprecated
+    public ClientConnectionManager getConnectionManager();
+
+    public HttpResponse execute(HttpHost var1, HttpRequest var2) throws ClientProtocolException, IOException;
+
+    public HttpResponse execute(HttpHost var1, HttpRequest var2, HttpContext var3) throws ClientProtocolException, IOException;
+}

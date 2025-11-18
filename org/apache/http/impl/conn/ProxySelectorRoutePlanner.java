@@ -1,0 +1,125 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.apache.http.HttpException
+ *  org.apache.http.HttpHost
+ *  org.apache.http.HttpRequest
+ *  org.apache.http.conn.params.ConnRouteParams
+ *  org.apache.http.conn.routing.HttpRoute
+ *  org.apache.http.conn.routing.HttpRoutePlanner
+ *  org.apache.http.conn.scheme.Scheme
+ *  org.apache.http.conn.scheme.SchemeRegistry
+ *  org.apache.http.impl.conn.ProxySelectorRoutePlanner$1
+ *  org.apache.http.params.HttpParams
+ *  org.apache.http.protocol.HttpContext
+ *  org.apache.http.util.Args
+ *  org.apache.http.util.Asserts
+ */
+package org.apache.http.impl.conn;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.routing.HttpRoutePlanner;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.Args;
+import org.apache.http.util.Asserts;
+
+@Deprecated
+public class ProxySelectorRoutePlanner
+implements HttpRoutePlanner {
+    protected ProxySelector proxySelector;
+    protected final SchemeRegistry schemeRegistry;
+
+    protected String getHost(InetSocketAddress isa) {
+        return isa.isUnresolved() ? isa.getHostName() : isa.getAddress().getHostAddress();
+    }
+
+    public ProxySelectorRoutePlanner(SchemeRegistry schreg, ProxySelector prosel) {
+        Args.notNull((Object)schreg, (String)"SchemeRegistry");
+        this.schemeRegistry = schreg;
+        this.proxySelector = prosel;
+    }
+
+    public HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
+        Args.notNull((Object)request, (String)"HTTP request");
+        HttpRoute route = ConnRouteParams.getForcedRoute((HttpParams)request.getParams());
+        if (route != null) {
+            return route;
+        }
+        Asserts.notNull((Object)target, (String)"Target host");
+        InetAddress local = ConnRouteParams.getLocalAddress((HttpParams)request.getParams());
+        HttpHost proxy = this.determineProxy(target, request, context);
+        Scheme schm = this.schemeRegistry.getScheme(target.getSchemeName());
+        boolean secure = schm.isLayered();
+        route = proxy == null ? new HttpRoute(target, local, secure) : new HttpRoute(target, local, proxy, secure);
+        return route;
+    }
+
+    public ProxySelector getProxySelector() {
+        return this.proxySelector;
+    }
+
+    protected HttpHost determineProxy(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
+        ProxySelector psel = this.proxySelector;
+        if (psel == null) {
+            psel = ProxySelector.getDefault();
+        }
+        if (psel == null) {
+            return null;
+        }
+        URI targetURI = null;
+        try {
+            targetURI = new URI(target.toURI());
+        }
+        catch (URISyntaxException usx) {
+            throw new HttpException("Cannot convert host to URI: " + target, (Throwable)usx);
+        }
+        List<Proxy> proxies = psel.select(targetURI);
+        Proxy p = this.chooseProxy(proxies, target, request, context);
+        HttpHost result = null;
+        if (p.type() != Proxy.Type.HTTP) return result;
+        if (!(p.address() instanceof InetSocketAddress)) {
+            throw new HttpException("Unable to handle non-Inet proxy address: " + p.address());
+        }
+        InetSocketAddress isa = (InetSocketAddress)p.address();
+        result = new HttpHost(this.getHost(isa), isa.getPort());
+        return result;
+    }
+
+    public void setProxySelector(ProxySelector prosel) {
+        this.proxySelector = prosel;
+    }
+
+    protected Proxy chooseProxy(List<Proxy> proxies, HttpHost target, HttpRequest request, HttpContext context) {
+        Args.notEmpty(proxies, (String)"List of proxies");
+        Proxy result = null;
+        block3: for (int i = 0; result == null && i < proxies.size(); ++i) {
+            Proxy p = proxies.get(i);
+            switch (1.$SwitchMap$java$net$Proxy$Type[p.type().ordinal()]) {
+                case 1: 
+                case 2: {
+                    result = p;
+                    continue block3;
+                }
+            }
+        }
+        if (result != null) return result;
+        result = Proxy.NO_PROXY;
+        return result;
+    }
+}

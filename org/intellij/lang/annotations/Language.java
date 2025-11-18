@@ -1,0 +1,25 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package org.intellij.lang.annotations;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.jetbrains.annotations.NonNls;
+
+@Documented
+@Target(value={ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE, ElementType.ANNOTATION_TYPE})
+@Retention(value=RetentionPolicy.CLASS)
+public @interface Language {
+    @NonNls
+    public String value();
+
+    @NonNls
+    public String suffix() default "";
+
+    @NonNls
+    public String prefix() default "";
+}
