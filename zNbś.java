@@ -61,10 +61,11 @@ import xyz.iknemko.tiktokliveconnector.kyori.adventure.text.Component;
 import xyz.iknemko.tiktokliveconnector.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /*
  * Illegal identifiers - consider using --renameillegalidents true
@@ -1152,33 +1153,38 @@ lbl82:
         zb\u017a\u015b.\u0106hY\u017c = closeableHttpClient;
     }
 
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
-
-        // odczytaj klucz
-        String licenseKey = getConfig().getString("license.key", "").trim();
-        if (licenseKey.isEmpty()) {
-            getLogger().warning("Brak klucza licencyjnego w konfiguracji (license.key). Plugin może nie działać.");
-            // Możesz zdecydować: disable plugin natychmiast lub próbować dalej
-        }
-
-        // asynchroniczna weryfikacja podczas startu
-        verifyLicenseAsync(licenseKey, valid -> {
-            if (valid) {
-                getLogger().info("Licencja poprawna — kontynuuję uruchamianie pluginu.");
-                licenseValid = true;
-                // dalej normalna inicjalizacja pluginu (rejestracja listenerów, tasków, itp.)
-                initAfterLicense();
-            } else {
-                getLogger().warning("Licencja nieprawidłowa — wyłączam plugin. Sprawdź license.key w konfiguracji.");
-                // Jeśli chcesz: wyłączyć plugin
-                Bukkit.getScheduler().runTask(this, () -> {
-                    getServer().getPluginManager().disablePlugin(this);
-                });
-            }
-        });
+private boolean verifyLicense() {
+    String licenseKey = getConfig().getString("license-key", "");
+    if (licenseKey.isEmpty()) {
+        getLogger().severe("⚠️ Brak klucza licencji w config.yml!");
+        return false;
     }
+
+    try {
+        URL url = new URL("https://widowkeys.alwaysdata.net/verify.php?key=" + licenseKey);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
+        conn.setRequestMethod("GET");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) response.append(line);
+        reader.close();
+
+        return response.toString().toLowerCase().contains("\"status\":\"valid\"");
+    } catch (Exception e) {
+        getLogger().warning("⚠️ Nie udało się połączyć z serwerem licencji: " + e.getMessage());
+        return false;
+    }
+}
+
+            if (!verifyLicense()) {
+         getLogger().warning("❌ Nieprawidłowy lub wygasły klucz licencyjny. Plugin zostaje wyłączony.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
     private void initAfterLicense() {
         // tutaj twój normalny kod inicjalizacyjny (rejestracje komend, tasków itd.)
