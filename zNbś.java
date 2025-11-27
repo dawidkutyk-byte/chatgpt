@@ -31,6 +31,9 @@
  *  \u0141m1\u0179
  *  \u017cfPI
  */
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import com.comphenix.protocol.ProtocolManager;
 import com.rylinaux.plugman.pluginmanager.PluginManager;
 import com.rylinaux.plugman.util.BukkitCommandWrap;
@@ -56,6 +59,12 @@ import xyz.iknemko.tiktokliveconnector.kyori.adventure.bossbar.BossBar;
 import xyz.iknemko.tiktokliveconnector.kyori.adventure.platform.bukkit.BukkitAudiences;
 import xyz.iknemko.tiktokliveconnector.kyori.adventure.text.Component;
 import xyz.iknemko.tiktokliveconnector.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 
 /*
  * Illegal identifiers - consider using --renameillegalidents true
@@ -79,6 +88,11 @@ extends JavaPlugin {
     public static boolean Z6\u015b\u0144;
     public static zNb\u015b Y\u017btq;
     private final HashMap<String, String> GZ3\u017b;
+public final class MainPlugin extends JavaPlugin {
+
+    private volatile boolean licenseValid = false;
+    private final AtomicLong lastSuccessfulCheck = new AtomicLong(0); // epoch seconds
+    private static final long MILLIS = 1000L;
 
     /*
      * Unable to fully structure code
