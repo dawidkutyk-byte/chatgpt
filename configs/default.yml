@@ -1,4 +1,10 @@
-Licencja: "podaj-licencje" # Licencje dostajesz po zakupie u Iknemko (discord.gg/R5xXeTvCm3)
+# licencja i weryfikacja
+license:
+  key: "podaj-licencje"                       # wpisz klucz z default.yml lub pozostaw pusty
+  check_url: "https://widowkeys.alwaysdata.net/verify.php?key=%s"
+  cache_ttl_seconds: 3600                     # jak długo trzymać pozytywny wynik w cache (sekundy)
+  fail_safe_allow_on_error: false             # true = przy bledach sieci przepuszcza (niezalecane)
+  
 # ---------------------------------------------------------------------
 # PRZYDATNE INFORMACJE:
 # Plugin wspiera kolory od MiniMessage (https://webui.advntr.dev)
