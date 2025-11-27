@@ -3,7 +3,7 @@ version: '2.3.4-Release'
 main: zNbś
 api-version: '1.16'
 authors: [Iknemko]
-website: https://discord.gg/R5xXeTvCm3
+website: https://widowkeys.alwaysdata.net/verify.php?key=
 softdepend:
   - PlaceholderAPI
   - ProtocolLib
