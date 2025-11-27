@@ -1,0 +1,47 @@
+currentPlugin: "NONE"
+plugins:
+  IKP:
+    configFileName: "ikp.yml"
+    location: null
+  IKB:
+    configFileName: "ikb.yml"
+    location: null
+  IWB:
+    configFileName: "iwb.yml"
+    location: null
+  IGB:
+    configFileName: "igb.yml"
+    location: null
+  IF:
+    configFileName: "if.yml"
+    location: null
+  IZ:
+    configFileName: "iz.yml"
+    location: null
+  IBD:
+    configFileName: "ibd.yml"
+    location: null
+  IZW:
+    configFileName: "izw.yml"
+    location: null
+  IP:
+    configFileName: "ip.yml"
+    location: null
+  IST:
+    configFileName: "ist.yml"
+    location: null
+  IKT:
+    configFileName: "ikt.yml"
+    location: null
+  IPM:
+    configFileName: "ipm.yml"
+    location: null
+  IB:
+    configFileName: "ib.yml"
+    location: null
+  ILB:
+    configFileName: "ilb.yml"
+    location: null
+  ID:
+    configFileName: "id.yml"
+    location: null

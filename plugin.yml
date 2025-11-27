@@ -1,0 +1,55 @@
+name: ITLC
+version: '2.3.4-Release'
+main: zNbś
+api-version: '1.16'
+authors: [Iknemko]
+website: https://discord.gg/R5xXeTvCm3
+softdepend:
+  - PlaceholderAPI
+  - ProtocolLib
+  - DecentHolograms
+  - IKP
+  - IKB
+  - IWB
+  - IGB
+  - IF
+  - IZ
+  - IBD
+  - IZW
+  - IP
+  - IST
+  - IKT
+  - IPM
+  - ILB
+  - ID
+commands:
+  connect:
+    aliases:
+      - polacz
+  sudo:
+  alert:
+  itlc:
+  testgift:
+  giveaway:
+  rainbow:
+  sound:
+    aliases:
+      - dzwiek
+  disconnect:
+    aliases:
+      - rozlacz
+  totem:
+  reset:
+  speed:
+  map:
+  menu:
+    aliases:
+      - gui
+  goal:
+    aliases:
+      - cel
+  user:
+    aliases:
+      - uzytkownik
+  fly:
+  gifts:

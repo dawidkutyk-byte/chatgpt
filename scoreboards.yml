@@ -1,0 +1,26 @@
+settings:
+  enable: true
+  refresh: 10 # Czas podawaj w sekundach
+scoreboards:
+  scoreboard-1:
+    title: "🎁 &#FFD659&lTopka 🎁"
+    lines:
+      - ' '
+      - '&#FFAD00smallCaps[Topka monet]&8:'
+      - '  &#7A7A7A#1 &#C9C9C9{topSentCoins_name_1} &8: &#FFCB5C{topSentCoins_count_1} &#DDDDDDsmallCaps[monet]'
+      - '  &#7A7A7A#2 &#C9C9C9{topSentCoins_name_2} &8: &#FFCB5C{topSentCoins_count_2} &#DDDDDDsmallCaps[monet]'
+      - '  &#7A7A7A#3 &#C9C9C9{topSentCoins_name_3} &8: &#FFCB5C{topSentCoins_count_3} &#DDDDDDsmallCaps[monet]'
+      - ' '
+      - '&#FFAD00smallCaps[Ostatni prezent]&8:'
+      - '  &#C9C9C9{lastGifter} &8- &r{lastGiftImage} &8(&#00D4FF💎&#78E8FF{lastGiftCost}&8)'
+  scoreboard-2:
+    title: "🎁 &#FFD659&lTopka 🎁"
+    lines:
+      - ' '
+      - '&#FFAD00smallCaps[Topka tapów]&8:'
+      - '  &#7A7A7A#1 &#C9C9C9{topLikes_name_1} &8: &#FFCB5C{topLikes_count_1} &#DDDDDDsmallCaps[tapów]'
+      - '  &#7A7A7A#2 &#C9C9C9{topLikes_name_2} &8: &#FFCB5C{topLikes_count_2} &#DDDDDDsmallCaps[tapów]'
+      - '  &#7A7A7A#3 &#C9C9C9{topLikes_name_3} &8: &#FFCB5C{topLikes_count_3} &#DDDDDDsmallCaps[tapów]'
+      - ' '
+      - '&#FFAD00smallCaps[Ostatni prezent]&8:'
+      - '  &#C9C9C9{lastGifter} &8- &r{lastGiftImage} &8(&#00D4FF💎&#78E8FF{lastGiftCost}&8)'

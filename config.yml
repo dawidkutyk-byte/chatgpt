@@ -1,0 +1,224 @@
+Licencja: "podaj-licencje" # Licencje dostajesz po zakupie u Iknemko (discord.gg/R5xXeTvCm3)
+# ---------------------------------------------------------------------
+# PRZYDATNE INFORMACJE:
+# Plugin wspiera kolory od MiniMessage (https://webui.advntr.dev)
+# Plugin wspiera prosty kalkulator Calculate[obliczenie]
+# Plugin wspiera zamienianie liter na mały caps smallCaps[tekst]
+# ---------------------------------------------------------------------
+tiktok_name: "twojanazwa" # Podaj nazwę z tiktoka.
+# ---------------------------------------------------------------------
+customGiftImages: true # Włącza texturepack serwerowy ze zdjęciami giftów
+clearStatistics: false # Czy co włączenie serwera ma czyścić topki
+giftCombo: true # Czy ma na bieżąco wysyłać gifty, czy za jednym razem
+async: false # Gdyby występowały lagi na serwerze zaleca się włączyć tę funkcję.
+# ---------------------------------------------------------------------
+shortName:  # Gdy nazwa użytkownika jest za długa zwraca pierwsze 15 znaków
+  enable: true # Czy nazwa użytkownika ma być mniejsza gdy jest za długa?
+  maxLength: 15 # Jak długa może być nazwa użytkownika
+# ---------------------------------------------------------------------
+giftHistoryScheme: # {giftHistory_X} - X to liczba ile zwrócić ma ostatnich giftów
+  minimumGiftCost: 1 # Minimalna cena gifta, aby go pokazało w historii giftów.
+  smallText: false
+  message: "{giftImage} "
+# ---------------------------------------------------------------------
+giveawayCommand:
+  minimum-role: follower # role: host, admin, mod, subscriber, gifter, follower, default
+  join-message: "&#FB9E00&l[Giveaway] {prefix}&f{nickname} &#FDDC00dołączył do losowania!"
+  winner-message: "&#00C200&l[Giveaway] &7Losowanie wygrywa &#60FE60{winner}&7, gratulacje!"
+  bossbar:
+    color: GREEN
+    overlay: "PROGRESS" # NOTCHED_20, NOTCHED_12, NOTCHED_10, NOTCHED_6, PROGRESS
+    message: "&8• &#95FF8ENapisz &f{word} &8:|: &#95FF8EWyniki losowania za &f{time}sek. &8•"
+# ---------------------------------------------------------------------
+goalCommand:
+  bossbar:
+    color: GREEN
+    refresh: 5 # Czas podawaj w sekundach
+    # {message}
+    # {time}
+    # {giftName}
+    # {giftImage}
+    # {percentage}
+    # {requiredGifts}
+    # {currentGifts}
+    message: "&3&lCel:&f {giftImage}{giftName} &b({currentGifts}/{requiredGifts}) &8| &f{message}"
+# ---------------------------------------------------------------------
+bossbar:
+  enable: false
+  color: WHITE # WHITE BLUE RED GREEN PINK PURPLE YELLOW
+  overlay: "NOTCHED_12" # NOTCHED_20, NOTCHED_12, NOTCHED_10, NOTCHED_6, PROGRESS
+  displayTime: 10 # Czas podany w sekundach
+  messages:
+    - '&8x &#B6B6B6Polubień&8: &#81FF7B{totalLikes} &8:|: &#B6B6B6Oglądających&8: &#81FF7B{viewers}
+    &8:|: &#B6B6B6Otrzymane monety&8: &#81FF7B{earnedDiamonds} &8x'
+    - '&8x <gradient:#2AD4FF:#DF4DFF>Zachęcam do zostawienia obserwacji!</gradient> &8x'
+# ---------------------------------------------------------------------
+alert:
+  gift:
+    title: "<b><gradient:#FFA046:#FCFFC3>✪ Prezent ✪</gradient></b>" # Aby pokazywały się zdjęcia ustaw title: "{giftImage}"
+# ---------------------------------------------------------------------
+requiredLike: 500 # Wymagana ilość polubień, aby się wykonały komendy.
+requiredLike-commands:
+  - command -> sudo {streamer} /say Dzięki za 500 like!
+  - command -> sudo {streamer /alert title-subtitle &eDzięki!❤\n<gradient:#50FF46:#27B72B>500 Polubień</gradient>
+# ---------------------------------------------------------------------
+requiredFollow: 3 # Wymagana ilość followów, aby się wykonały komendy.
+requiredFollow-commands:
+  - command -> sudo {streamer} /say Obserwacje 3/3
+# ---------------------------------------------------------------------
+# dostępne opcję: broadcast, command, subtitle, actionbar
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {giftName} - zwraca nazwę wysłanego prezentu.
+# {giftImage} - zwraca zdjęcie wysłanego prezentu (opcja "customGiftImages" musi być włączona)
+# {giftCost} - zwraca, ile kosztowało wysłanie giftu/ów.
+# {giftStreak} - zwraca, ile wysłano z rzędu giftów.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+# {giftUrl} - zwraca link do zdjęcia giftu.
+gift:
+  commands:
+    - broadcast -> &#FFDF4D&lPrezent &8| {giftBadge}{fanBadge} &#ADADAD{nickname} &8- &#E8FF00{giftName} &#FFC900x{giftStreak}
+# ---------------------------------------------------------------------
+# {displayname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {giftName} - zwraca nazwę wysłanego prezentu.
+# {giftImage} - zwraca zdjęcie wysłanego prezentu (opcja "customGiftImages" musi być włączona)
+# {giftCost} - zwraca, ile kosztowało wysłanie giftu/ów.
+# {giftStreak} - zwraca, ile wysłano z rzędu giftów.
+combo:
+  commands:
+    - command -> alert title-subtitle <b><gradient:#5F9EFF:#BBFFFC>✪ Prezent ✪</gradient></b>\n&a{displayname} &8- {giftImage} &#BBFFFC{giftName} &7(x{giftStreak})
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {message} - zwraca wiadomość, jaką napisała osoba na czacie transmisji.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+chat:
+  commands:
+    - broadcast -> &#76FF5E&lCzat &8| {prefix}{giftBadge}{fanBadge} &#ADADAD{displayname} &8» &#ABFF9C{message}
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {likeCount} - zwraca, ile wysłała osoba w danym momencie tapnięć.
+# {likes} - zwraca, ile jest aktualnie polubień do następnej nagrody.
+# {requiredLike} - zwraca, ile potrzeba polubień do nagrody.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+like:
+  commands:
+    - actionbar -> &8• {giftBadge}{fanBadge} &#ED9CFF{nickname} &8- &#F3BDFFpolubił ten strimek! &8[&#ED9CFFx{likeCount}&8] &8[&#F3BDFF{likes}&8/&#ED9CFF{requiredLike}&8] &8•
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {newFollowers} - zwraca, ile przybyło nowych obserwacji podczas transmisji.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {followCount} - zwraca licznik ile zostało do wykonania requiredFollow
+# {requiredFollow} - zwraca, ile trzeba dać followów, aby wykonało się requiredFollow
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+follow:
+  commands:
+    - broadcast -> &#FFC85C&lObserwacja &8| {giftBadge}{fanBadge} &#ADADAD{displayname} &8- &#FFDC96Dziękuje Ci za obserwację! &8(&7x&#FFC85C{newFollowers}&8)
+    - command -> sudo {streamer} alert title-subtitle <b><gradient:#46FF5A:#FDE200>Obserwacja</gradient></b>\n&fDziękuje &#46FF5A{displayname}&f!
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+join:
+  commands:
+    - actionbar -> &8• {giftBadge}{fanBadge} &#5EFF5C{displayname} &8- &#A2FFA1dołączył/a na strimek! &8•
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+share:
+  commands:
+    - broadcast -> &#5EADFF&lUdostępnienie &8| {prefix}{giftBadge}{fanBadge} &#ADADAD{displayname} &8- &#8FC4FFDzięki za przesłanie transmisji dalej!
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+subscribe:
+  commands:
+    - broadcast -> &#FF0000&lSubskrypcja &8| {giftBadge}{fanBadge} &7{displayname} &8- &#FF6060Dzięki za kupienie subskrypcji!
+# ---------------------------------------------------------------------
+# {nickname} - zwraca unikalny nick z tiktoka.
+# {displayname} - zwraca wyświetlaną nazwę z tiktoka.
+# {prefix} - zwraca rolę, jaką posiada na streamie.
+# {totalDiamonds} - zwraca, ile monet jest w skrzyni.
+# {totalUsers} - zwraca, ile osób może odebrać monety.
+# {gifterLevel} - zwraca poziom badge w dawaniu giftów.
+# {profileUrl} - zwraca link do zdjęcia profilu użytkownika.
+chest:
+  commands:
+    - broadcast -> &#BEF527&lSkrzynia &8| {giftBadge}{fanBadge} &7{displayname} &8- &#D9FA7DWysyła skrzynie &#A7D132🪙{totalDiamonds} &#D9FA7Dmonet dla &#A7D132{totalUsers} &#D9FA7Dosób!
+    - command -> sudo {streamer} alert bossbar+ chest YELLOW 15 {giftBadge}{fanBadge} &7{displayname} &8- &#D9FA7DWysła skrzynie &#A7D132🪙{totalDiamonds} &#D9FA7Dmonet dla &#A7D132{totalUsers} &#D9FA7Dosób!
+# ---------------------------------------------------------------------
+# {nickname} - zwraca podany nick w tipply.
+# {value} - zwraca, ile wpłacił.
+# {message} - zwraca podaną wiadomość w tipply.
+tipply:
+  url: "link" # Podaj swój widget https://widgets.tipply.pl/TIP_ALERT/{twoje id}
+  commands:
+    - broadcast -> &8[&#da9109Tipply&8] &7{nickname} &fwpłacił &#ffbf49{value}zł &8>> &a{message}
+    - command -> alert title-subtitle &#ffbf49{nickname} &fwpłacił &#ffbf49{value}zł\n&a{message}
+    - command -> alert bossbar GREEN 60 &8[&#da9109Tipply&8] &7{nickname} &fwpłacił &#ffbf49{value}zł &8>> &a{message}
+  keyword-commands:
+    siema:
+      aliases: [siemka]
+      commands:
+        - command -> say {nickname} wysłał siema w wiadomości!
+# ---------------------------------------------------------------------
+giftActions:
+  # Aby dodać wykonywanie komendy dodaj do commands: - command -> sudo {streamer} komenda
+  # Jeżeli chcesz wykonywać obliczenia użyj CALCULATE[] przykład: CALCULATE[25 * 5]
+  # {streamer} przypisuje się po wykonaniu komendy /polacz
+  rose:
+    commands:
+      - command -> alert prezent &8• &a{displayname} &8- &r{giftImage} &#FCFFC3x{giftStreak} &8•
+      - command -> sudo {streamer} /say Dzięki za różyczkę!
+# ---------------------------------------------------------------------
+customCommands:
+  cooldown-message: "&8{nickname}&7&o, musi poczekać &8{time} &7&ozanim użyje komendy&7! &8(&f{command}&8)"
+  '!test':
+    minimum-role: follower # role: host, admin, mod, subscriber, gifter, follower, default
+    cooldown: 5 # czas w sekundach
+    commands:
+      - command -> sudo {streamer} /say Testowa komenda!
+# ---------------------------------------------------------------------
+giftNames:
+  - Rose -> "Róża"
+  - Finger-Heart -> "Serce z palców"
+  - Lollipop -> "Lizak"
+  - Doughnut -> "Pączek"
+  - Mic -> "Mikrofon"
+  - Cap -> "Czapka"
+  - Gamepad -> "Kontroler"
+  - Mirror -> "Lustro"
+  - Little-Crown -> "Mała korona"
+  - Sunglasses -> "Okulary przeciwsłoneczne"
+  - Heart -> "Serce"
+  - Duck -> "Kaczka"
+  - Follow -> "Obserwacje"
+  - Like -> "Polubienia"
+  - Diamonds -> "Diamenty"
+# ---------------------------------------------------------------------
+roleNames:
+  - Host -> "&#FF0000Streamer "
+  - Admin -> "<gradient:#FF5F5F:#FFA8CB>Moderator</gradient><reset> "
+  - Mod -> "&#46B921Mod "
+  - Subscriber -> "<gradient:#FF46DC:#EED3FF>Subskrybuje</gradient><reset> "
+  - Gifter -> "<gradient:#4687FF:#C3FFF8>Prezentodawca</gradient><reset> "
+  - Follower -> "<gradient:#FFCD46:#FFF9C3>Obserwuje</gradient><reset> "
+  - default -> ""
