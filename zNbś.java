@@ -1156,7 +1156,7 @@ lbl82:
 private boolean verifyLicense() {
     String licenseKey = getConfig().getString("license-key", "");
     if (licenseKey.isEmpty()) {
-        getLogger().severe("⚠️ Brak klucza licencji w config.yml!");
+        getLogger().severe("⚠️ Brak klucza licencji w default.yml!");
         return false;
     }
 
