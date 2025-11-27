@@ -1152,6 +1152,119 @@ lbl82:
         zb\u017a\u015b.\u0106hY\u017c = closeableHttpClient;
     }
 
+    @Override
+    public void onEnable() {
+        saveDefaultConfig();
+
+        // odczytaj klucz
+        String licenseKey = getConfig().getString("license.key", "").trim();
+        if (licenseKey.isEmpty()) {
+            getLogger().warning("Brak klucza licencyjnego w konfiguracji (license.key). Plugin może nie działać.");
+            // Możesz zdecydować: disable plugin natychmiast lub próbować dalej
+        }
+
+        // asynchroniczna weryfikacja podczas startu
+        verifyLicenseAsync(licenseKey, valid -> {
+            if (valid) {
+                getLogger().info("Licencja poprawna — kontynuuję uruchamianie pluginu.");
+                licenseValid = true;
+                // dalej normalna inicjalizacja pluginu (rejestracja listenerów, tasków, itp.)
+                initAfterLicense();
+            } else {
+                getLogger().warning("Licencja nieprawidłowa — wyłączam plugin. Sprawdź license.key w konfiguracji.");
+                // Jeśli chcesz: wyłączyć plugin
+                Bukkit.getScheduler().runTask(this, () -> {
+                    getServer().getPluginManager().disablePlugin(this);
+                });
+            }
+        });
+    }
+
+    private void initAfterLicense() {
+        // tutaj twój normalny kod inicjalizacyjny (rejestracje komend, tasków itd.)
+    }
+
+    /**
+     * Asynchroniczne sprawdzenie klucza licencji. Zwraca wynik przez callback na wątku głównym.
+     */
+    private void verifyLicenseAsync(String licenseKey, java.util.function.Consumer<Boolean> callback) {
+        if (licenseKey == null) licenseKey = "";
+
+        // sprawdź cache
+        long ttlSeconds = getConfig().getLong("license.cache_ttl_seconds", 3600);
+        long now = System.currentTimeMillis();
+        long last = lastSuccessfulCheck.get();
+        if (last != 0 && (now - last) < ttlSeconds * MILLIS && licenseValid) {
+            // zwróć cached result natychmiast (na głównym wątku)
+            Bukkit.getScheduler().runTask(this, () -> callback.accept(true));
+            return;
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                boolean valid = false;
+                String checkUrlTemplate = getConfig().getString("license.check_url",
+                        "https://widowkeys.alwaysdata.net/verify.php?key=%s");
+                String urlString = String.format(checkUrlTemplate, encodeURIComponent(licenseKey));
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(urlString);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setConnectTimeout(5000);
+                    conn.setReadTimeout(5000);
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("User-Agent", "MyPlugin-Licensing/1.0");
+
+                    int code = conn.getResponseCode();
+                    if (code == 200) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder sb = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) sb.append(line);
+                        reader.close();
+                        String body = sb.toString().toLowerCase();
+                        // prosty parser: akceptujemy {"status":"valid"} lub "valid" w treści
+                        valid = body.contains("\"status\":\"valid\"") || body.contains("\"valid\"");
+                    } else {
+                        getLogger().warning("Weryfikacja licencji zwróciła HTTP " + code);
+                    }
+                } catch (Exception e) {
+                    getLogger().log(Level.WARNING, "Nie udało się połączyć z serwerem licencji: " + e.getMessage(), e);
+                    // fallback w zależności od konfiguracji
+                    boolean allowOnError = getConfig().getBoolean("license.fail_safe_allow_on_error", false);
+                    if (allowOnError) {
+                        getLogger().warning("fail_safe_allow_on_error = true -> traktuję jako ważne (tymczasowo)");
+                        valid = true;
+                    } else {
+                        valid = false;
+                    }
+                } finally {
+                    if (conn != null) conn.disconnect();
+                }
+
+                boolean finalValid = valid;
+                if (finalValid) {
+                    licenseValid = true;
+                    lastSuccessfulCheck.set(System.currentTimeMillis());
+                }
+
+                // wywołujemy callback na głównym wątku (Bukkit)
+                Bukkit.getScheduler().runTask(MainPlugin.this, () -> callback.accept(finalValid));
+            }
+        }.runTaskAsynchronously(this);
+    }
+
+    // Proste kodowanie URL (bez dodatkowych bibliotek)
+    private static String encodeURIComponent(String s) {
+        try {
+            return java.net.URLEncoder.encode(s, "UTF-8").replaceAll("\\+", "%20");
+        } catch (Exception e) {
+            return s;
+        }
+    }
+}
+
     public BukkitCommandWrap getBukkitCommandWrap() {
         if (CRACKME_991bd8b9_0278_4ef6_b7d7_1829d4a6f3f1_f3fdac55 == (0xEA0E734201FF4B2EL ^ 0x5658E893DD6E6789L)) {
             if (((1152895129604682214L == 1152895129604682215L ? -1655771402 : 0x88BADE72 ^ 0xF6BC2960) ^ -353089 - 2147130560) != 0) {
